@@ -1,0 +1,1 @@
+export default function Vetements() { return Vêtements et Merch; }
