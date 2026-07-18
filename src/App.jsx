@@ -1,56 +1,72 @@
-import React, { useState } from 'react';
-// import InteractiveSmoke from './components/InteractiveSmoke'; // Ton effet de fond
+import React from 'react';
 
 export default function App() {
-  // On définit "Coin Snack" comme onglet actif par défaut
-  const [activeTab, setActiveTab] = useState('Coin Snack');
-
-  const categories = [
-    { id: 'coin-vert', label: 'Coin Vert' },
-    { id: 'vetements', label: 'Vêtements' },
-    { id: 'coin-snack', label: 'Coin Snack' },
-  ];
-
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden font-sans">
-      {/* <InteractiveSmoke /> */}
-      
-      {/* Contenu principal par-dessus la fumée */}
-      <div className="relative z-10 flex flex-col h-screen">
-        
-        {/* En-tête */}
-        <header className="p-6 pt-10 text-center">
-          <h1 className="text-3xl font-bold tracking-widest uppercase mb-2">Le Shop</h1>
-          <p className="text-gray-400 text-sm">Choisis ta catégorie</p>
-        </header>
+    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans flex flex-col">
+      {/* En-tête / Navbar */}
+      <nav className="p-6 border-b border-gray-800/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <h1 className="text-2xl font-bold tracking-wide">Le Coin Vert x Snack</h1>
+        <div className="text-sm text-gray-400 tracking-wider">
+          Vape & Weed <span className="mx-3 text-gray-700">|</span> Snacks Exotiques <span className="mx-3 text-gray-700">|</span> Vêtements
+        </div>
+      </nav>
 
-        {/* Navigation : Les 3 Boutons */}
-        <div className="px-6 flex flex-col gap-4 mb-8">
-          {categories.map((cat) => (
-            <button 
-              key={cat.id}
-              onClick={() => setActiveTab(cat.label)}
-              className={`py-4 px-6 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg backdrop-blur-md 
-                ${activeTab === cat.label 
-                  ? 'bg-green-500/90 text-black border-2 border-green-400 shadow-[0_0_20px_rgba(34,197,94,0.4)]' 
-                  : 'bg-gray-900/60 text-gray-300 border border-gray-700/50 hover:bg-gray-800/80'
-                }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+      {/* Contenu Principal */}
+      <main className="flex-1 flex flex-col items-center justify-center p-6 mt-12 mb-12">
+        {/* Titre Hero */}
+        <div className="text-center max-w-3xl mb-16 space-y-4">
+          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tight">
+            L'EXPÉRIENCE <br/>
+            <span className="text-[#1cd45e]">COIN VERT</span>
+          </h2>
+          <p className="text-gray-400 text-lg md:text-xl mt-6 px-4">
+            Ta destination numéro un à Montmagny pour la vape, les accessoires et les munchies introuvables ailleurs au Québec.
+          </p>
         </div>
 
-        {/* Zone de la grille de produits (pour demain) */}
-        <main className="flex-1 bg-gray-900/80 backdrop-blur-xl rounded-t-[40px] p-6 border-t border-gray-700/50">
-          <div className="h-full flex items-center justify-center border-2 border-dashed border-gray-700 rounded-3xl">
-            <p className="text-center text-gray-500 animate-pulse">
-              Les {activeTab === 'Vêtements' ? 'vêtements' : activeTab === 'Coin Vert' ? 'produits verts' : 'snacks'} apparaîtront ici...
+        {/* Grille des 3 Catégories */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl w-full px-4">
+          
+          {/* Carte 1 : Coin Vert */}
+          <div className="bg-[#121212] border border-gray-800 rounded-2xl p-8 hover:border-[#1cd45e]/50 hover:bg-[#181818] transition-all duration-300 cursor-pointer group">
+            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <span className="text-3xl group-hover:scale-110 transition-transform duration-300">💨</span> 
+              Le Coin Vert
+            </h3>
+            <p className="text-gray-400 leading-relaxed text-sm md:text-base">
+              Bongs, vapes, feuilles et accessoires. Tout l'équipement dont tu as besoin, avec les meilleurs conseils en boutique.
             </p>
           </div>
-        </main>
 
-      </div>
+          {/* Carte 2 : Vêtements */}
+          <div className="bg-[#121212] border border-gray-800 rounded-2xl p-8 hover:border-white/50 hover:bg-[#181818] transition-all duration-300 cursor-pointer group">
+            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <span className="text-3xl group-hover:scale-110 transition-transform duration-300">👕</span> 
+              Vêtements
+            </h3>
+            <p className="text-gray-400 leading-relaxed text-sm md:text-base">
+              Affiche tes couleurs avec notre merch exclusif et notre sélection streetwear. Le style de la rue, directement en boutique.
+            </p>
+          </div>
+
+          {/* Carte 3 : Coin Snack */}
+          <div className="bg-[#121212] border border-gray-800 rounded-2xl p-8 hover:border-red-500/50 hover:bg-[#181818] transition-all duration-300 cursor-pointer group">
+            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+              <span className="text-3xl group-hover:scale-110 transition-transform duration-300">🍬</span> 
+              Le Coin Snack
+            </h3>
+            <p className="text-gray-400 leading-relaxed text-sm md:text-base">
+              Importations exclusives, bonbons rares et boissons exotiques pour gérer tes munchies comme il se doit.
+            </p>
+          </div>
+
+        </div>
+      </main>
+
+      {/* Pied de page */}
+      <footer className="text-center p-8 text-gray-600 text-sm mt-auto border-t border-gray-800/30">
+        © 2026 Le Coin Vert x Le Coin Snack - Montmagny.
+      </footer>
     </div>
   );
 }
