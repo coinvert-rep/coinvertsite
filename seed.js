@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 
 // Remplace par tes vraies clés Supabase
-const supabaseUrl = 'URL_DE_TON_PROJET_SUPABASE';
-const supabaseKey = 'TA_CLE_ANON_PUBLIQUE'; 
+const supabaseUrl = 'https://kppiallycqkvrqixgpoc.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtwcGlhbGx5Y3FrdnJxaXhncG9jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzMTU5ODksImV4cCI6MjA5OTg5MTk4OX0.jUqOgvwV3EM14kucGbusDUqhd6H-Dcz68dQay2XtT04'; 
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
