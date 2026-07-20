@@ -30,21 +30,9 @@ export default function TabBar() {
         color: tabColors[tabId]
       });
 
-      setTimeout(() => {
-        setDropStyle({
-          top: '55px',
-          left: `${offsetLeft + 6}px`,
-          opacity: 1
-        });
-      }, 300);
-
-      setTimeout(() => {
-        setDropStyle({ top: '75px', left: '31px', opacity: 0 });
-      }, 500);
-
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 500);
+      setTimeout(() => setDropStyle({ top: '55px', left: `${offsetLeft + 6}px`, opacity: 1 }), 300);
+      setTimeout(() => setDropStyle({ top: '75px', left: '31px', opacity: 0 }), 500);
+      setTimeout(() => setIsAnimating(false), 500);
     }
   };
 
@@ -56,7 +44,6 @@ export default function TabBar() {
         setIndicatorStyle(prev => ({ ...prev, left: `${offsetLeft}px` }));
       }
     };
-
     setTimeout(updatePosition, 100); 
     window.addEventListener('resize', updatePosition);
     return () => window.removeEventListener('resize', updatePosition);
@@ -65,127 +52,56 @@ export default function TabBar() {
   return (
     <>
       <style>{`
-        /* FORÇAGE DE LA POSITION ET DU Z-INDEX */
         .glass-tab-container {
+          /* Flottant, centré et toujours visible */
           position: fixed !important;
-          bottom: 30px !important;
+          bottom: 25px !important;
           left: 50% !important;
           transform: translateX(-50%) !important;
-          z-index: 2147483647 !important; /* Valeur maximale absolue */
+          z-index: 999999 !important; 
           
           display: flex;
           justify-content: space-around;
           align-items: center;
           
           width: clamp(320px, 90vw, 500px);
-          height: 95px;
-          border-radius: 25px;
+          height: 85px;
+          border-radius: 30px;
           
-          /* Un peu plus visible sur fond noir pour s'assurer qu'elle est là */
-          background: rgba(255, 255, 255, 0.15); 
-          backdrop-filter: blur(15px);
-          -webkit-backdrop-filter: blur(15px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
-                      inset 0 1px 1px rgba(255, 255, 255, 0.1);
+          /* Design : Verre, Ombrage et Bordure */
+          background: rgba(20, 20, 20, 0.65); 
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.6), /* Ombre extérieure forte */
+                      inset 0 1px 1px rgba(255, 255, 255, 0.2); /* Reflet intérieur */
         }
 
-        .tab {
-          width: 50px;
-          height: 50px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          z-index: 2;
-        }
+        .tab { width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; position: relative; z-index: 2; }
+        .tab label { cursor: pointer; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; -webkit-tap-highlight-color: transparent; }
+        .tab svg { width: 30px; position: relative; }
 
-        .tab label {
-          cursor: pointer;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          -webkit-tap-highlight-color: transparent;
-        }
-
-        .tab svg { width: 35px; position: relative; }
-
-        .svg-icon-deactive {
-          fill: rgba(255, 255, 255, 0.6);
-          stroke: rgba(255, 255, 255, 0.6);
-          display: inline;
-          width: 100%;
-          height: 100%;
-          transition: all 0.3s ease;
-        }
-
+        .svg-icon-deactive { fill: rgba(255, 255, 255, 0.5); stroke: rgba(255, 255, 255, 0.5); display: inline; width: 100%; height: 100%; transition: all 0.3s ease; }
         .tab input, .tab use.tab-active { display: none; }
-
-        .tab input:checked + label svg use.tab-active {
-          transform-origin: 50% 50%;
-          animation: fill-animation 0.9s ease 0.3s forwards;
-          display: block;
-          fill: none;
-        }
-
+        .tab input:checked + label svg use.tab-active { transform-origin: 50% 50%; animation: fill-animation 0.9s ease 0.3s forwards; display: block; fill: none; }
         .tab input:checked + label svg use.tab-deactive { display: none; }
-
         .tab label:hover svg { animation: scale-animation 0.9s ease 0.2s forwards; }
 
         .indicator {
-          position: absolute;
-          width: 22px; height: 17px;
-          top: 78px;
+          position: absolute; width: 22px; height: 17px; top: 68px;
           transition: left 0.3s ease-in-out, background-color 0.3s ease-in-out;
           border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-          transform-origin: center 20px;
-          z-index: 1;
+          transform-origin: center 20px; z-index: 1;
         }
 
         .indicator-animation { animation: scale-indicator-animation 0.2s ease-out 0.3s; }
+        .indicator::before { content: ""; position: absolute; border-right: 5px solid var(--indicator); border-radius: 0% 35% 51% 0 / 0% 100% 78% 0; width: 18px; height: 16.5px; left: -17.5px; top: -2px; transform: rotate(36deg); transition: border-color 0.3s ease-in-out; }
+        .indicator::after { content: ""; position: absolute; border-left: 5px solid var(--indicator); border-radius: 35% 0% 0% 51% / 100% 0% 0% 78%; width: 18px; height: 16.5px; left: 16.5px; top: -2px; transform: rotate(-36deg); transition: border-color 0.3s ease-in-out; }
+        .indicator-drop { position: absolute; width: 8px; height: 8px; border-radius: 50%; background-color: #ffffff; transition: top 0.2s ease-in-out, opacity 0.2s ease; box-shadow: 0 0 10px rgba(255,255,255,0.8); z-index: 1; }
 
-        .indicator::before {
-          content: ""; position: absolute;
-          border-right: 5px solid var(--indicator);
-          border-radius: 0% 35% 51% 0 / 0% 100% 78% 0;
-          width: 18px; height: 16.5px;
-          left: -17.5px; top: -2px;
-          transform: rotate(36deg);
-          transition: border-color 0.3s ease-in-out;
-        }
-
-        .indicator::after {
-          content: ""; position: absolute;
-          border-left: 5px solid var(--indicator);
-          border-radius: 35% 0% 0% 51% / 100% 0% 0% 78%;
-          width: 18px; height: 16.5px;
-          left: 16.5px; top: -2px;
-          transform: rotate(-36deg);
-          transition: border-color 0.3s ease-in-out;
-        }
-
-        .indicator-drop {
-          position: absolute; width: 8px; height: 8px;
-          border-radius: 50%; background-color: #ffffff;
-          transition: top 0.2s ease-in-out, opacity 0.2s ease;
-          box-shadow: 0 0 10px rgba(255,255,255,0.8);
-          z-index: 1;
-        }
-
-        @keyframes fill-animation {
-          from { clip-path: circle(0% at 50% 100%); }
-          to { clip-path: circle(110% at bottom); fill: #ffffff; }
-        }
-        @keyframes scale-animation {
-          from { transform: scale(0.9); }
-          to { transform: scale(1.1); }
-        }
-        @keyframes scale-indicator-animation {
-          from { transform: scaleY(0.7) scaleX(1.3); }
-          to { transform: scaleY(1) scaleX(1); }
-        }
+        @keyframes fill-animation { from { clip-path: circle(0% at 50% 100%); } to { clip-path: circle(110% at bottom); fill: #ffffff; } }
+        @keyframes scale-animation { from { transform: scale(0.9); } to { transform: scale(1.1); } }
+        @keyframes scale-indicator-animation { from { transform: scaleY(0.7) scaleX(1.3); } to { transform: scaleY(1) scaleX(1); } }
       `}</style>
 
       <svg style={{ display: 'none' }}>
@@ -220,27 +136,19 @@ export default function TabBar() {
       <div className="glass-tab-container">
         <div className="tab" ref={el => tabsRef.current['tab-one'] = el}>
           <input id="tab-one" name="tab" type="radio" checked={activeTab === 'tab-one'} onChange={() => handleTabClick('tab-one')} />
-          <label htmlFor="tab-one">
-            <svg className="svg-icon"><use href="#home-deactive" className="svg-icon-deactive tab-deactive" /><use href="#home-active" className="svg-icon-active tab-active" /></svg>
-          </label>
+          <label htmlFor="tab-one"><svg className="svg-icon"><use href="#home-deactive" className="svg-icon-deactive tab-deactive" /><use href="#home-active" className="svg-icon-active tab-active" /></svg></label>
         </div>
         <div className="tab" ref={el => tabsRef.current['tab-two'] = el}>
           <input id="tab-two" name="tab" type="radio" checked={activeTab === 'tab-two'} onChange={() => handleTabClick('tab-two')} />
-          <label htmlFor="tab-two">
-            <svg className="svg-icon"><use href="#message-deactive" className="svg-icon-deactive tab-deactive" /><use href="#message-active" className="svg-icon-active tab-active" /></svg>
-          </label>
+          <label htmlFor="tab-two"><svg className="svg-icon"><use href="#message-deactive" className="svg-icon-deactive tab-deactive" /><use href="#message-active" className="svg-icon-active tab-active" /></svg></label>
         </div>
         <div className="tab" ref={el => tabsRef.current['tab-three'] = el}>
           <input id="tab-three" name="tab" type="radio" checked={activeTab === 'tab-three'} onChange={() => handleTabClick('tab-three')} />
-          <label htmlFor="tab-three">
-            <svg className="svg-icon"><use href="#heart-deactive" className="svg-icon-deactive tab-deactive" /><use href="#heart-active" className="svg-icon-active tab-active" /></svg>
-          </label>
+          <label htmlFor="tab-three"><svg className="svg-icon"><use href="#heart-deactive" className="svg-icon-deactive tab-deactive" /><use href="#heart-active" className="svg-icon-active tab-active" /></svg></label>
         </div>
         <div className="tab" ref={el => tabsRef.current['tab-four'] = el}>
           <input id="tab-four" name="tab" type="radio" checked={activeTab === 'tab-four'} onChange={() => handleTabClick('tab-four')} />
-          <label htmlFor="tab-four">
-            <svg className="svg-icon"><use href="#alert-deactive" className="svg-icon-deactive tab-deactive" /><use href="#alert-active" className="svg-icon-active tab-active" /></svg>
-          </label>
+          <label htmlFor="tab-four"><svg className="svg-icon"><use href="#alert-deactive" className="svg-icon-deactive tab-deactive" /><use href="#alert-active" className="svg-icon-active tab-active" /></svg></label>
         </div>
 
         <div className={`indicator ${isAnimating ? 'indicator-animation' : ''}`} style={{ left: indicatorStyle.left, backgroundColor: indicatorStyle.color, '--indicator': indicatorStyle.color }}></div>
