@@ -26,7 +26,7 @@ export default function Accueil() {
         endX: Math.random() * 100,
         
         // Variation de la hauteur finale
-        endYOffset: Math.random() * 30 
+        endYOffset: Math.random() * 35 
       };
     });
   }, []);
