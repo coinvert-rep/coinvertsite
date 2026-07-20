@@ -137,7 +137,7 @@ export default function Accueil() {
       </main>
 
       {/* COUCHE 3 : La barre de navigation */}
-      <TabBar />
+      <TabBar/>
 
     </div>
   );
