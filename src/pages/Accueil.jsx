@@ -1,42 +1,27 @@
 import React, { useMemo } from 'react';
-import TabBar from './TabBar'; // Assure-toi que le chemin est correct
+import TabBar from './TabBar'; // Assure-toi que le fichier est bien dans le même dossier
 
 export default function Accueil() {
   const particles = useMemo(() => {
-    // On crée un tableau de 200 éléments avec des valeurs mathématiques aléatoires
     return Array.from({ length: 200 }).map((_, i) => {
       return {
         id: i,
-        // Équivalent de $circleSize: random($particleWidth);
         size: Math.random() * 10 + 1, 
-        
-        // Équivalent de $startPositionY: random(10) + 100;
         startPositionY: Math.random() * 10 + 100, 
-        
-        // Équivalent de $moveDuration: 7000 + random(4000) + ms;
         moveDuration: 7000 + Math.random() * 4000, 
-        
-        // Équivalent de animation-delay: random(11000) + ms;
         delayContainer: Math.random() * 11000, 
-        
-        // Équivalent de animation-delay: random(4000) + ms; pour .circle
         delayCircle: Math.random() * 4000, 
-        
-        // Coordonnées X (vw) de départ et d'arrivée
         startX: Math.random() * 100,
         endX: Math.random() * 100,
-        
-        // Variation de la hauteur finale
         endYOffset: Math.random() * 35 
       };
     });
   }, []);
 
   return (
-    // Conteneur principal en position relative pour superposer les couches
     <div className="accueil-wrapper" style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
       
-      {/* COUCHE 1 : L'arrière-plan animé */}
+      {/* COUCHE 1 : L'arrière-plan animé (Particules) */}
       <div className="hub-background" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
         <style>{`
           html, body {
@@ -44,7 +29,6 @@ export default function Accueil() {
             height: 100%;
             margin: 0;
             padding: 0;
-            /* J'ai retiré le overflow: hidden global ici pour ne pas bloquer tout ton site s'il grandit */
           }
 
           .hub-background {
@@ -115,7 +99,7 @@ export default function Accueil() {
         ))}
       </div>
 
-      {/* COUCHE 2 : Ton contenu interactif (Textes, boutons, grilles) */}
+      {/* COUCHE 2 : Le texte et le contenu principal */}
       <main 
         className="accueil-content" 
         style={{ 
@@ -124,20 +108,19 @@ export default function Accueil() {
           left: 0, 
           width: '100%', 
           height: '100%', 
-          zIndex: 10, // S'assure que le texte est au-dessus des particules
-          overflowY: 'auto', // Permet de faire défiler le contenu s'il est plus long que l'écran
-          paddingBottom: '130px' // L'espace vital pour ne rien cacher sous la TabBar
+          zIndex: 10, 
+          overflowY: 'auto',
+          paddingBottom: '130px'
         }}
       >
-        {/* Tu peux ajouter ton vrai contenu ici */}
-        <div style={{ padding: '20px', color: 'white', textAlign: 'center' }}>
+        <div style={{ padding: '40px', color: 'white', textAlign: 'center', fontFamily: 'sans-serif' }}>
           <h1>Le Coin Vert x Snack</h1>
           <p>Bienvenue sur notre application.</p>
         </div>
       </main>
 
-      {/* COUCHE 3 : La barre de navigation */}
-      <TabBar/>
+      {/* COUCHE 3 : La TabBar (Apparaîtra par-dessus tout le reste) */}
+      <TabBar />
 
     </div>
   );

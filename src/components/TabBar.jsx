@@ -62,7 +62,6 @@ export default function TabBar() {
       }
     };
 
-    // Petit délai initial pour laisser le navigateur calculer les largeurs
     setTimeout(updatePosition, 100); 
     window.addEventListener('resize', updatePosition);
     return () => window.removeEventListener('resize', updatePosition);
@@ -73,22 +72,20 @@ export default function TabBar() {
       <style>{`
         /* EFFET GLASSMORPHISM ET POSITIONNEMENT */
         .glass-tab-container {
-          position: fixed;
+          position: absolute; /* CORRIGÉ ICI : absolute au lieu de fixed */
           bottom: 30px;
           left: 50%;
           transform: translateX(-50%);
-          z-index: 1000;
+          z-index: 9999; /* CORRIGÉ ICI : z-index très élevé pour passer par-dessus les particules */
           
           display: flex;
           justify-content: space-around;
           align-items: center;
           
-          /* Taille proportionnelle à l'écran */
           width: clamp(320px, 90vw, 500px);
           height: 95px;
           border-radius: 25px;
           
-          /* L'effet Verre (Glass) */
           background: rgba(255, 255, 255, 0.05);
           backdrop-filter: blur(15px);
           -webkit-backdrop-filter: blur(15px);
@@ -136,7 +133,6 @@ export default function TabBar() {
           display: none;
         }
 
-        /* Animation au clic */
         .tab input:checked + label svg use.tab-active {
           transform-origin: 50% 50%;
           animation: fill-animation 0.9s ease 0.3s forwards;
@@ -205,7 +201,6 @@ export default function TabBar() {
           z-index: 1;
         }
 
-        /* KEYFRAMES */
         @keyframes fill-animation {
           from { clip-path: circle(0% at 50% 100%); }
           to { clip-path: circle(110% at bottom); fill: #ffffff; }
@@ -222,7 +217,6 @@ export default function TabBar() {
         }
       `}</style>
 
-      {/* SYMBOLES SVG INVISIBLES POUR RÉUTILISATION */}
       <svg style={{ display: 'none' }}>
         <symbol id='home-deactive' viewBox='0 0 25 25'>
             <path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z" strokeWidth="0.05"/>
@@ -252,10 +246,8 @@ export default function TabBar() {
         </symbol>
       </svg>
 
-      {/* LA BARRE DE NAVIGATION */}
       <div className="glass-tab-container">
         
-        {/* Tab 1 : Coin Vert (Vert Flash) */}
         <div className="tab" ref={el => tabsRef.current['tab-one'] = el}>
           <input 
             id="tab-one" 
@@ -272,7 +264,6 @@ export default function TabBar() {
           </label>
         </div>
 
-        {/* Tab 2 : Coin Snack (Rose Bonbon) */}
         <div className="tab" ref={el => tabsRef.current['tab-two'] = el}>
           <input 
             id="tab-two" 
@@ -289,7 +280,6 @@ export default function TabBar() {
           </label>
         </div>
 
-        {/* Tab 3 : Cyan */}
         <div className="tab" ref={el => tabsRef.current['tab-three'] = el}>
           <input 
             id="tab-three" 
@@ -306,7 +296,6 @@ export default function TabBar() {
           </label>
         </div>
 
-        {/* Tab 4 : Alert/Admin (Orange) */}
         <div className="tab" ref={el => tabsRef.current['tab-four'] = el}>
           <input 
             id="tab-four" 
@@ -323,7 +312,6 @@ export default function TabBar() {
           </label>
         </div>
 
-        {/* Indicateur coloré et petite goutte animée */}
         <div 
           className={`indicator ${isAnimating ? 'indicator-animation' : ''}`}
           style={{ 
