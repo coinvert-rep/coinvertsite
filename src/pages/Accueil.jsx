@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import TabBar from './TabBar'; 
 
 export default function Accueil() {
   const particles = useMemo(() => {
@@ -72,7 +71,7 @@ export default function Accueil() {
       </div>
 
       {/* COUCHE 3 : La TabBar (Totalement isolée du reste) */}
-      <TabBar />
+
     </>
   );
 }
