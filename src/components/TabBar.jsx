@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 export default function TabBar() {
-  // Le bouton par défaut est la maison (bouton central)
   const [activeTab, setActiveTab] = useState('maison');
+  const [isVisible, setIsVisible] = useState(true); // État pour cacher/montrer la barre
 
   const handleTab = (tabId) => {
     if (activeTab !== tabId) {
@@ -10,64 +10,93 @@ export default function TabBar() {
     }
   };
 
-  // Composant interne qui gère le liquide pour pouvoir le mettre dans la barre ET dans le cadenas
-  const LiquidBackground = ({ isPadlock }) => (
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  };
+
+  // Composant interne pour le liquide
+  const LiquidBackground = () => (
     <div className="liquid-container">
-      {/* Liquide Vert */}
       <div className={`water-layer water-vert ${activeTab === 'vert' ? 'show' : ''}`}></div>
-      
-      {/* Liquide Rose (Snack) */}
       <div className={`water-layer water-snack ${activeTab === 'snack' ? 'show' : ''}`}></div>
-      
-      {/* Liquide Orange (Admin) */}
       <div className={`water-layer water-admin ${activeTab === 'admin' ? 'show' : ''}`}></div>
       
-      {/* Liquide Maison (Couleurs séparées) */}
-      <div className={`water-layer water-maison ${activeTab === 'maison' ? 'show' : ''}`}>
-        {!isPadlock ? (
-          <>
-            <div className="blob blob-vert"></div>
-            <div className="blob blob-cyan"></div>
-            <div className="blob blob-pink"></div>
-          </>
-        ) : (
-          <div className="blob blob-cyan padlock-blob"></div>
-        )}
-      </div>
+      {/* Nouveau liquide Maison : prend toute la place avec un dégradé multicolore */}
+      <div className={`water-layer water-maison ${activeTab === 'maison' ? 'show' : ''}`}></div>
     </div>
   );
 
   return (
-    <div className="tabbar-global-wrapper">
+    // La classe 'hidden' s'ajoute si isVisible est faux, déclenchant l'animation CSS
+    <div className={`tabbar-global-wrapper ${isVisible ? '' : 'hidden'}`}>
       <style>{`
-        /* POSITIONNEMENT GLOBAL */
+        /* POSITIONNEMENT GLOBAL ET ANIMATION HIDE/SHOW */
         .tabbar-global-wrapper {
           position: fixed !important;
           bottom: 25px !important;
           left: 50% !important;
-          transform: translateX(-50%) !important;
+          /* On ajoute une variable translateY pour gérer le glissement vers le bas */
+          transform: translateX(-50%) translateY(var(--translate-y, 0)) !important;
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           z-index: 999999 !important; 
           
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px; /* L'espace entre la ligne de 3 et le cadenas */
+          gap: 8px; 
         }
 
-        /* LE VRAI EFFET VERRE (GLASSMORPHISM) */
+        /* Quand la barre est cachée, elle descend de 145px */
+        .tabbar-global-wrapper.hidden {
+          --translate-y: 145px;
+        }
+
+        /* LE BOUTON FLÈCHE (TOGGLE) */
+        .toggle-btn {
+          width: 50px;
+          height: 25px;
+          border-radius: 15px 15px 0 0; /* Arrondi en haut, plat en bas */
+          background: rgba(255, 255, 255, 0.05); /* Très transparent */
+          backdrop-filter: blur(15px);
+          -webkit-backdrop-filter: blur(15px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-bottom: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          margin-bottom: -2px; /* Colle le bouton à la barre */
+          z-index: 20;
+          color: rgba(255, 255, 255, 0.8);
+          box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-icon {
+          width: 20px;
+          height: 20px;
+          transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Tourne la flèche quand c'est caché */
+        .hidden .toggle-icon {
+          transform: rotate(180deg);
+        }
+
+        /* L'EFFET VERRE ULTRA-TRANSPARENT */
         .glass-row, .glass-padlock {
-          background: rgba(20, 20, 20, 0.4);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
+          /* On baisse drastiquement l'opacité (0.05 au lieu de 0.4) pour plus de transparence */
+          background: rgba(255, 255, 255, 0.05); 
+          backdrop-filter: blur(25px); /* On augmente le flou pour garder l'effet verre */
+          -webkit-backdrop-filter: blur(25px);
           border: 1px solid rgba(255, 255, 255, 0.15);
-          border-top: 1px solid rgba(255, 255, 255, 0.4); /* Reflet de lumière au-dessus */
-          border-bottom: 1px solid rgba(0, 0, 0, 0.5); /* Ombre de la tranche en dessous */
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.3);
           box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.6), /* Ombre projetée très forte */
-            inset 0 1px 3px rgba(255, 255, 255, 0.3); /* Brillance interne */
+            0 15px 30px rgba(0, 0, 0, 0.4), 
+            inset 0 1px 3px rgba(255, 255, 255, 0.1);
           
           position: relative;
-          overflow: hidden; /* Garde l'eau à l'intérieur du verre */
+          overflow: hidden; 
         }
 
         .glass-row {
@@ -90,106 +119,60 @@ export default function TabBar() {
 
         /* COMPORTEMENT DES BOUTONS */
         .tab-btn {
-          flex: 1;
-          height: 100%;
-          background: none;
-          border: none;
-          cursor: pointer;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 10; /* Au-dessus de l'eau */
-          position: relative;
-          outline: none;
-          -webkit-tap-highlight-color: transparent;
+          flex: 1; height: 100%; background: none; border: none; cursor: pointer;
+          display: flex; justify-content: center; align-items: center;
+          z-index: 10; position: relative; outline: none; -webkit-tap-highlight-color: transparent;
         }
-        
         .padlock-btn { width: 100%; }
 
         /* LES ICÔNES SVG */
         .icon-svg {
-          width: 26px;
-          height: 26px;
-          fill: none;
-          stroke: rgba(255, 255, 255, 0.5);
-          stroke-width: 2;
-          stroke-linecap: round;
-          stroke-linejoin: round;
+          width: 26px; height: 26px; fill: none;
+          stroke: rgba(255, 255, 255, 0.6);
+          stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .tab-btn:hover .icon-svg {
-          stroke: rgba(255, 255, 255, 0.8);
-          transform: scale(1.1);
-        }
-
+        .tab-btn:hover .icon-svg { stroke: rgba(255, 255, 255, 0.9); transform: scale(1.1); }
         .tab-btn.active .icon-svg {
-          stroke: rgba(255, 255, 255, 1);
-          transform: scale(1.2);
-          filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)); /* Brillance quand sélectionné */
+          stroke: rgba(255, 255, 255, 1); transform: scale(1.2);
+          filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)); 
         }
 
         /* --- L'EFFET LIQUIDE (EAU COLORÉE) --- */
-        .liquid-container {
-          position: absolute;
-          inset: 0;
-          pointer-events: none; /* Laisse passer les clics vers les boutons */
-          z-index: 0;
-        }
-
+        .liquid-container { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+        
         .water-layer {
-          position: absolute;
-          inset: 0;
-          opacity: 0;
-          transform: translateY(100%); /* Le liquide commence en bas, hors du verre */
+          position: absolute; inset: 0; opacity: 0;
+          transform: translateY(100%); 
           transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
         }
 
-        .water-layer.show {
-          opacity: 1;
-          transform: translateY(0); /* Le liquide monte et remplit le verre */
-        }
+        .water-layer.show { opacity: 1; transform: translateY(0); }
 
-        /* Les couleurs de l'eau (plus sombre en bas, transparent en haut) */
+        /* Les couleurs de l'eau */
         .water-vert { background: linear-gradient(to top, rgba(57, 255, 20, 0.5), rgba(57, 255, 20, 0.05)); }
         .water-snack { background: linear-gradient(to top, rgba(255, 105, 180, 0.5), rgba(255, 105, 180, 0.05)); }
         .water-admin { background: linear-gradient(to top, rgba(255, 69, 0, 0.5), rgba(255, 69, 0, 0.05)); }
-
-        /* L'état Maison (3 Couleurs distinctes) */
-        .water-maison {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 10%;
-        }
-
-        .blob {
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-          opacity: 0.65;
-          filter: blur(12px); /* Crée l'effet de nuage de couleur dans l'eau */
-          animation: float-blob 4s infinite ease-in-out alternate;
-        }
-
-        .blob-vert { background: #39FF14; animation-delay: 0s; }
-        .blob-cyan { background: #00FFFF; animation-delay: -1.5s; }
-        .blob-pink { background: #FF69B4; animation-delay: -3s; }
         
-        .padlock-blob { width: 35px; height: 35px; margin: auto; }
-
-        @keyframes float-blob {
-          0% { transform: translateY(-5px) scale(0.9); }
-          100% { transform: translateY(5px) scale(1.15); }
+        /* Nouveau Liquide Maison (Plein écran, mix des couleurs du site) */
+        .water-maison { 
+          background: linear-gradient(to top, rgba(0, 255, 255, 0.4), rgba(255, 105, 180, 0.15), rgba(57, 255, 20, 0.05)); 
         }
       `}</style>
 
+      {/* BOUTON POUR MASQUER/AFFICHER */}
+      <button className="toggle-btn" onClick={toggleVisibility}>
+        <svg className="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+
       {/* --- LIGNE DE 3 --- */}
       <div className="glass-row">
-        {/* Le liquide en arrière plan */}
-        <LiquidBackground isPadlock={false} />
+        <LiquidBackground />
         
-        {/* Bouton 1 : Coin Vert (Feuille) */}
+        {/* Bouton 1 : Coin Vert */}
         <button className={`tab-btn ${activeTab === 'vert' ? 'active' : ''}`} onClick={() => handleTab('vert')}>
           <svg className="icon-svg" viewBox="0 0 24 24">
             <path d="M2 22c5-10 12-14 20-14-3 9-9 14-20 14z" />
@@ -197,7 +180,7 @@ export default function TabBar() {
           </svg>
         </button>
 
-        {/* Bouton 2 : Maison (Home) */}
+        {/* Bouton 2 : Maison */}
         <button className={`tab-btn ${activeTab === 'maison' ? 'active' : ''}`} onClick={() => handleTab('maison')}>
           <svg className="icon-svg" viewBox="0 0 24 24">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -205,7 +188,7 @@ export default function TabBar() {
           </svg>
         </button>
 
-        {/* Bouton 3 : Coin Snack (Tasse/Boisson) */}
+        {/* Bouton 3 : Coin Snack */}
         <button className={`tab-btn ${activeTab === 'snack' ? 'active' : ''}`} onClick={() => handleTab('snack')}>
           <svg className="icon-svg" viewBox="0 0 24 24">
             <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
@@ -217,10 +200,9 @@ export default function TabBar() {
         </button>
       </div>
 
-      {/* --- LE 4ÈME BOUTON (CADENAS ADMIN) EN DESSOUS --- */}
+      {/* --- LE 4ÈME BOUTON (CADENAS ADMIN) --- */}
       <div className="glass-padlock">
-        {/* Le liquide remplit aussi le cadenas simultanément ! */}
-        <LiquidBackground isPadlock={true} />
+        <LiquidBackground />
         
         <button className={`tab-btn padlock-btn ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => handleTab('admin')}>
           <svg className="icon-svg" viewBox="0 0 24 24">
