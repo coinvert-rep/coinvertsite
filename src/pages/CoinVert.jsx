@@ -47,14 +47,18 @@ export default function CoinVert() {
             Engrais Spécialisés
           </h2>
           
-          {/* CONTENEUR TITRE + LOGOS (C'est ici que la magie opère) */}
+          {/* CONTENEUR TITRE + LOGOS AVEC FONDU */}
           <div className="flex items-center justify-center gap-4 sm:gap-8 mb-2">
             
-            {/* Rectangle Vert Gauche : Logo */}
+            {/* Rectangle Vert Gauche : Logo avec fondu radial */}
             <img 
               src="/masque.png" 
               alt="Logo Gauche" 
               className="w-14 sm:w-24 h-auto object-contain opacity-90 drop-shadow-[0_0_15px_rgba(74,139,65,0.2)]" 
+              style={{
+                WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)',
+                maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
+              }}
             />
 
             <h1 className="font-kiln text-5xl sm:text-7xl uppercase flex gap-3 drop-shadow-[0_4px_15px_rgba(0,0,0,0.5)]">
@@ -62,13 +66,16 @@ export default function CoinVert() {
               <span className="text-[#4a8b41]">Vert</span>
             </h1>
 
-            {/* Rectangle Vert Droit : Logo en miroir */}
-            {/* L'astuce scaleX(-1) retourne l'image pour qu'ils se regardent */}
+            {/* Rectangle Vert Droit : Logo en miroir avec fondu radial */}
             <img 
               src="/masque.png" 
               alt="Logo Droit" 
               className="w-14 sm:w-24 h-auto object-contain opacity-90 drop-shadow-[0_0_15px_rgba(180,50,40,0.2)]" 
-              style={{ transform: 'scaleX(-1)' }}
+              style={{ 
+                transform: 'scaleX(-1)', 
+                WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)',
+                maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
+              }}
             />
 
           </div>
