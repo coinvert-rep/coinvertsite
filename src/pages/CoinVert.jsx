@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
 
-// Structure des catégories basée sur ton schéma
 const CATEGORIES = {
   VAPESHOP: ["Tout", "Pièces", "Kit (Prêt à remplir)", "Accessoire (Autre)", "Juice"],
   SMOKESHOP: ["Tout", "Bong", "Pipe", "Papier", "Stockage", "Plaque à rouler", "Autres"]
 };
 
-// Base de données fictive adaptée aux nouvelles catégories
 const MOCK_PRODUCTS = [
   { id: 1, nom: "Kit Vaporesso Luxe", prix: 55.00, rayon: "VAPESHOP", sousCategorie: "Kit (Prêt à remplir)", image: "💨" },
-  { id: 2, nom: "E-Liquide Fruits Rouges 50ml", prix: 19.99, rayon: "VAPESHOP", sousCategorie: "Juice", image: "🍓" },
-  { id: 3, nom: "Résistance Mesh 0.2ohm", prix: 4.50, rayon: "VAPESHOP", sousCategorie: "Pièces", image: "⚙️" },
-  { id: 4, nom: "Bong en Verre 30cm", prix: 35.00, rayon: "SMOKESHOP", sousCategorie: "Bong", image: "🏺" },
+  { id: 2, nom: "E-Liquide Fruits Rouges", prix: 19.99, rayon: "VAPESHOP", sousCategorie: "Juice", image: "🍓" },
+  { id: 3, nom: "Résistance Mesh", prix: 4.50, rayon: "VAPESHOP", sousCategorie: "Pièces", image: "⚙️" },
+  { id: 4, nom: "Bong en Verre Premium", prix: 35.00, rayon: "SMOKESHOP", sousCategorie: "Bong", image: "🏺" },
   { id: 5, nom: "Feuilles OCB Slim", prix: 2.00, rayon: "SMOKESHOP", sousCategorie: "Papier", image: "📄" },
-  { id: 6, nom: "Plateau Métal Rick & Morty", prix: 12.50, rayon: "SMOKESHOP", sousCategorie: "Plaque à rouler", image: "🛹" },
-  { id: 7, nom: "Boîte de Conservation Sous Vide", prix: 22.00, rayon: "SMOKESHOP", sousCategorie: "Stockage", image: "📦" },
-  { id: 8, nom: "Pipe en Bois Artisanale", prix: 18.00, rayon: "SMOKESHOP", sousCategorie: "Pipe", image: "🪵" },
+  { id: 6, nom: "Plateau Rick & Morty", prix: 12.50, rayon: "SMOKESHOP", sousCategorie: "Plaque à rouler", image: "🛹" },
+  { id: 7, nom: "Boîte Sous Vide", prix: 22.00, rayon: "SMOKESHOP", sousCategorie: "Stockage", image: "📦" },
+  { id: 8, nom: "Pipe en Bois", prix: 18.00, rayon: "SMOKESHOP", sousCategorie: "Pipe", image: "🪵" },
 ];
 
 export default function CoinVert() {
-  // États pour les filtres à deux niveaux
-  const [rayonActif, setRayonActif] = useState("VAPESHOP"); // Niveau 1
-  const [sousCategorieActive, setSousCategorieActive] = useState("Tout"); // Niveau 2
+  const [rayonActif, setRayonActif] = useState("SMOKESHOP"); // Par défaut sur Smokeshop vu le logo
+  const [sousCategorieActive, setSousCategorieActive] = useState("Tout");
 
-  // Fonction pour changer de rayon (et réinitialiser la sous-catégorie à "Tout")
   const changerRayon = (nouveauRayon) => {
     setRayonActif(nouveauRayon);
     setSousCategorieActive("Tout");
   };
 
-  // Filtrer les produits selon le rayon ET la sous-catégorie
   const produitsFiltres = MOCK_PRODUCTS.filter(produit => {
     const correspondRayon = produit.rayon === rayonActif;
     const correspondSousCat = sousCategorieActive === "Tout" || produit.sousCategorie === sousCategorieActive;
@@ -37,87 +32,148 @@ export default function CoinVert() {
   });
 
   return (
-    <div className="min-h-screen bg-[#021027] text-white pb-[150px] font-sans">
+    // Fond global très sombre pour faire ressortir les couleurs du logo
+    <div className="min-h-screen bg-[#08090a] text-white pb-[150px] font-sans selection:bg-[#4a8b41] selection:text-white">
       
-      {/* 1. EN-TÊTE */}
-      <header className="pt-16 px-6 text-center">
-        <h1 className="text-4xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">
-          Le Coin Vert
-        </h1>
+      {/* --- EN-TÊTE IMMERSIF (HEADER) --- */}
+      <header className="relative pt-12 pb-10 px-6 text-center overflow-hidden border-b border-white/5 bg-black/40">
+        
+        {/* 
+          ANIMATION DE FUMÉE (CSS) + EMPLACEMENT POUR TES IMAGES
+          mix-blend-screen permet à la fumée de s'incruster parfaitement sans fond noir visible
+        */}
+        <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen overflow-hidden flex items-center justify-center">
+          {/* Si tu as un vrai PNG de fumée, décommente la ligne ci-dessous et mets le bon chemin */}
+          {/* <img src="/chemin/vers/ta-fumee.png" alt="" className="absolute w-full h-full object-cover opacity-60 smoke-anim" /> */}
+          
+          {/* Fumée CSS de secours (très sobre, de couleur verte et rouille) */}
+          <div className="absolute w-[150%] h-[150%] bg-[radial-gradient(ellipse_at_center,_rgba(74,139,65,0.15)_0%,_rgba(0,0,0,0)_60%)] smoke-anim-1"></div>
+          <div className="absolute w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_rgba(180,50,40,0.1)_0%,_rgba(0,0,0,0)_60%)] smoke-anim-2"></div>
+        </div>
+
+        {/* TYPOGRAPHIE INSPIRÉE DU LOGO */}
+        <div className="relative z-10 flex flex-col items-center">
+          <h2 className="text-[#b43228] uppercase tracking-[0.3em] text-xs sm:text-sm font-semibold mb-3 opacity-90" style={{ fontFamily: 'Georgia, serif' }}>
+            Engrais Spécialisés
+          </h2>
+          
+          <h1 className="text-5xl sm:text-6xl font-black uppercase tracking-wider drop-shadow-lg mb-1 flex gap-3">
+            <span className="text-gray-200">Le Coin</span>
+            <span className="text-[#4a8b41]">Vert</span>
+          </h1>
+          
+          <h3 className="text-[#b43228] uppercase tracking-[0.2em] text-xl sm:text-2xl font-bold font-serif opacity-95">
+            Smoke Shop
+          </h3>
+        </div>
       </header>
 
-      {/* 2. SÉLECTEUR NIVEAU 1 : VAPESHOP vs SMOKESHOP */}
+      {/* --- SÉLECTEUR NIVEAU 1 : VAPESHOP vs SMOKESHOP --- */}
+      {/* Design "Hardware/Tactique" : boutons sombres avec lueur subtile */}
       <div className="flex justify-center px-6 mt-8">
-        <div className="bg-black/30 backdrop-blur-md p-1 rounded-xl border border-white/10 flex w-full max-w-sm">
+        <div className="bg-[#0b0d0f] p-1.5 rounded-xl border border-white/5 flex w-full max-w-md shadow-2xl">
           <button 
             onClick={() => changerRayon("VAPESHOP")}
-            className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all duration-300 ${
+            className={`flex-1 py-3 text-sm tracking-wider font-bold rounded-lg transition-all duration-500 uppercase ${
               rayonActif === "VAPESHOP" 
-                ? 'bg-green-500/20 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]' 
-                : 'text-gray-400 hover:text-white'
+                ? 'bg-gradient-to-b from-[#1a1c20] to-[#0b0d0f] text-[#4a8b41] border border-[#4a8b41]/30 shadow-[0_0_20px_rgba(74,139,65,0.15)]' 
+                : 'text-gray-500 hover:text-gray-300 border border-transparent'
             }`}
           >
-            VAPESHOP
+            Vapeshop
           </button>
           <button 
             onClick={() => changerRayon("SMOKESHOP")}
-            className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all duration-300 ${
+            className={`flex-1 py-3 text-sm tracking-wider font-bold rounded-lg transition-all duration-500 uppercase ${
               rayonActif === "SMOKESHOP" 
-                ? 'bg-green-500/20 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]' 
-                : 'text-gray-400 hover:text-white'
+                ? 'bg-gradient-to-b from-[#1a1c20] to-[#0b0d0f] text-[#b43228] border border-[#b43228]/30 shadow-[0_0_20px_rgba(180,50,40,0.15)]' 
+                : 'text-gray-500 hover:text-gray-300 border border-transparent'
             }`}
           >
-            SMOKESHOP
+            Smokeshop
           </button>
         </div>
       </div>
 
-      {/* 3. SÉLECTEUR NIVEAU 2 : SOUS-CATÉGORIES */}
-      <div className="flex gap-2 px-6 mt-6 overflow-x-auto pb-4 scrollbar-hide justify-start md:justify-center" style={{ scrollbarWidth: 'none' }}>
-        {CATEGORIES[rayonActif].map(cat => (
-          <button 
-            key={cat}
-            onClick={() => setSousCategorieActive(cat)}
-            className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
-              sousCategorieActive === cat 
-                ? 'bg-white text-black' // Style très visible pour la sous-catégorie active
-                : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10' 
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+      {/* --- SÉLECTEUR NIVEAU 2 : SOUS-CATÉGORIES --- */}
+      <div className="flex gap-2 px-6 mt-8 overflow-x-auto pb-4 scrollbar-hide justify-start md:justify-center" style={{ scrollbarWidth: 'none' }}>
+        {CATEGORIES[rayonActif].map(cat => {
+          const isActive = sousCategorieActive === cat;
+          // La couleur d'accentuation change selon le rayon (Vert ou Rouge rouille)
+          const accentColor = rayonActif === "SMOKESHOP" ? 'bg-[#b43228] text-white' : 'bg-[#4a8b41] text-white';
+          
+          return (
+            <button 
+              key={cat}
+              onClick={() => setSousCategorieActive(cat)}
+              className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 ${
+                isActive 
+                  ? accentColor 
+                  : 'bg-[#15171a] text-gray-400 border border-white/5 hover:bg-[#1f2226] hover:text-gray-200' 
+              }`}
+            >
+              {cat}
+            </button>
+          );
+        })}
       </div>
 
-      {/* 4. GRILLE DE PRODUITS */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-6 mt-2 max-w-7xl mx-auto">
+      {/* --- GRILLE DE PRODUITS --- */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-6 mt-4 max-w-7xl mx-auto">
         {produitsFiltres.map(produit => (
           <div 
             key={produit.id} 
-            className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col items-center text-center hover:bg-white/10 hover:border-green-500/30 transition-all duration-300 group cursor-pointer"
+            className="bg-[#0b0d0f]/80 backdrop-blur-md border border-white/5 rounded-2xl p-4 flex flex-col items-center text-center transition-all duration-300 group hover:bg-[#121418] hover:border-white/10"
           >
-            <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-black/40 flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+            {/* Zone image (sobre, fond très sombre) */}
+            <div className="w-full aspect-square rounded-xl bg-[#050607] border border-white/5 flex items-center justify-center text-4xl mb-4 group-hover:scale-95 transition-transform duration-500 shadow-inner">
               {produit.image}
             </div>
             
-            <h3 className="font-semibold text-gray-100 text-sm md:text-base leading-tight mb-1">{produit.nom}</h3>
-            <span className="text-[10px] uppercase tracking-wider text-green-400/70 mb-auto">{produit.sousCategorie}</span>
-            <p className="text-white font-bold mt-3 text-lg">{produit.prix.toFixed(2)} $</p>
+            {/* Textes du produit */}
+            <h3 className="font-semibold text-gray-200 text-sm md:text-base leading-tight mb-1">{produit.nom}</h3>
+            <span className="text-[10px] uppercase tracking-widest text-gray-500 mb-auto">{produit.sousCategorie}</span>
+            
+            {/* Prix (Couleur dynamique selon le rayon) */}
+            <p className={`font-bold mt-3 text-lg ${produit.rayon === 'SMOKESHOP' ? 'text-[#b43228]' : 'text-[#4a8b41]'}`}>
+              {produit.prix.toFixed(2)} $
+            </p>
 
-            <button className="mt-3 w-full py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-medium hover:bg-green-500 hover:text-black hover:border-green-500 transition-colors">
+            {/* Bouton d'ajout */}
+            <button className={`mt-4 w-full py-2.5 rounded-xl border border-white/10 text-xs font-bold uppercase tracking-wider transition-colors duration-300 ${
+              produit.rayon === 'SMOKESHOP' 
+                ? 'bg-[#15171a] text-gray-300 hover:bg-[#b43228] hover:text-white hover:border-[#b43228]' 
+                : 'bg-[#15171a] text-gray-300 hover:bg-[#4a8b41] hover:text-white hover:border-[#4a8b41]'
+            }`}>
               Ajouter
             </button>
           </div>
         ))}
-        
-        {/* Message si aucun produit dans la catégorie */}
-        {produitsFiltres.length === 0 && (
-          <div className="col-span-2 md:col-span-3 lg:col-span-4 text-center py-10 text-gray-500">
-            Aucun produit disponible dans cette catégorie pour le moment.
-          </div>
-        )}
       </div>
 
+      {/* --- CSS POUR L'ANIMATION DE FUMÉE --- */}
+      <style>{`
+        .smoke-anim-1 {
+          animation: smoke-drift 20s infinite alternate ease-in-out;
+          filter: blur(40px);
+        }
+        .smoke-anim-2 {
+          animation: smoke-drift 25s infinite alternate-reverse ease-in-out;
+          filter: blur(50px);
+        }
+        @keyframes smoke-drift {
+          0% { transform: translate(-5%, -5%) scale(1); opacity: 0.3; }
+          50% { transform: translate(5%, 10%) scale(1.1); opacity: 0.6; }
+          100% { transform: translate(-10%, 5%) scale(1.05); opacity: 0.4; }
+        }
+        .smoke-anim {
+          animation: smoke-pulse 15s infinite alternate ease-in-out;
+        }
+        @keyframes smoke-pulse {
+          0% { opacity: 0.4; transform: scale(1.02) rotate(-1deg); }
+          100% { opacity: 0.7; transform: scale(1.08) rotate(1deg); }
+        }
+      `}</style>
     </div>
   );
 }
