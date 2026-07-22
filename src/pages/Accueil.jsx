@@ -1,9 +1,6 @@
 import React, { useMemo, useState } from 'react';
-// Assure-toi que ton fichier CSS global est bien importé (par ex. dans main.jsx ou ici)
-// pour que l'animation de la carte fonctionne.
 
 export default function Accueil() {
-  // État pour gérer l'onglet actif (maison par défaut)
   const [ongletActif, setOngletActif] = useState('maison');
 
   const particles = useMemo(() => {
@@ -23,7 +20,8 @@ export default function Accueil() {
   }, []);
 
   return (
-    <>
+    <> {/* <--- BALISE D'OUVERTURE OBLIGATOIRE ICI */}
+      
       {/* COUCHE 1 : Arrière-plan fixé à l'écran (z-index: -1) */}
       <div 
         style={{ 
@@ -77,7 +75,6 @@ export default function Accueil() {
               <span>🎉 Promo de la semaine : -20% sur la nouvelle collection !</span>
               <span>📢 Actualité : Nouveau drop ce vendredi à 18h !</span>
               <span>⭐ N'oubliez pas de vérifier vos points de fidélité.</span>
-              {/* Répéter les éléments pour créer un effet infini fluide */}
               <span>🎉 Promo de la semaine : -20% sur la nouvelle collection !</span>
             </div>
           </div>
@@ -85,13 +82,10 @@ export default function Accueil() {
 
         <main style={{ padding: '20px', paddingBottom: '150px', color: 'white', textAlign: 'center', paddingTop: '120px' }}>
           <h1>Le Coin Vert x Snack</h1>
-          <p>La barre devrait s'afficher tout en bas !</p>
-          <p className="mt-4 opacity-50">Onglet actuellement actif : {ongletActif}</p>
+          <p>Bienvenue sur l'accueil !</p>
         </main>
       </div>
 
-
-      </div>
-    </>
+    </> {/* <--- BALISE DE FERMETURE OBLIGATOIRE ICI */}
   );
 }
