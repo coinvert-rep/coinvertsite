@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function TabBar() {
-  const [activeTab, setActiveTab] = useState('maison');
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
 
+  // On déduit l'onglet actif en lisant l'URL actuelle
+  let activeTab = 'maison';
+  if (location.pathname === '/vert') activeTab = 'vert';
+  if (location.pathname === '/snack') activeTab = 'snack';
+  if (location.pathname === '/admin') activeTab = 'admin';
+
   const handleTab = (tabId) => {
-    if (activeTab !== tabId) {
-      setActiveTab(tabId);
-    }
+    // Au lieu de juste changer une variable, on change de page
+    if (tabId === 'maison') navigate('/');
+    if (tabId === 'vert') navigate('/vert');
+    if (tabId === 'snack') navigate('/snack');
+    if (tabId === 'admin') navigate('/admin');
   };
 
   const toggleVisibility = () => {
@@ -129,7 +139,7 @@ export default function TabBar() {
         }
         .padlock-btn { width: 100%; }
 
-        /* NOUVEAU : STYLE DES ICÔNES EMOJIS */
+        /* STYLE DES ICÔNES EMOJIS */
         .emoji-icon {
           font-size: 28px;
           transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -146,7 +156,7 @@ export default function TabBar() {
           filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); 
         }
 
-        /* Le cadenas SVG (on le garde en SVG car tu n'avais pas d'emoji pour lui) */
+        /* Le cadenas SVG */
         .icon-svg {
           width: 26px; height: 26px; fill: none;
           stroke: rgba(255, 255, 255, 0.6);
