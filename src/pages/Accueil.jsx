@@ -20,8 +20,7 @@ export default function Accueil() {
   }, []);
 
   return (
-    <> {/* <--- BALISE D'OUVERTURE OBLIGATOIRE ICI */}
-      
+    <>
       {/* COUCHE 1 : Arrière-plan fixé à l'écran (z-index: -1) */}
       <div 
         style={{ 
@@ -85,7 +84,6 @@ export default function Accueil() {
           <p>Bienvenue sur l'accueil !</p>
         </main>
       </div>
-
-    </> {/* <--- BALISE DE FERMETURE OBLIGATOIRE ICI */}
+    </>
   );
 }
