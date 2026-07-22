@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function TabBar() {
   const [activeTab, setActiveTab] = useState('maison');
-  const [isVisible, setIsVisible] = useState(true); // État pour cacher/montrer la barre
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleTab = (tabId) => {
     if (activeTab !== tabId) {
@@ -14,20 +14,18 @@ export default function TabBar() {
     setIsVisible(!isVisible);
   };
 
-  // Composant interne pour le liquide
   const LiquidBackground = () => (
     <div className="liquid-container">
       <div className={`water-layer water-vert ${activeTab === 'vert' ? 'show' : ''}`}></div>
       <div className={`water-layer water-snack ${activeTab === 'snack' ? 'show' : ''}`}></div>
       <div className={`water-layer water-admin ${activeTab === 'admin' ? 'show' : ''}`}></div>
       
-      {/* Nouveau liquide Maison : prend toute la place avec un dégradé multicolore */}
+      {/* L'eau de la maison est maintenant transparente */}
       <div className={`water-layer water-maison ${activeTab === 'maison' ? 'show' : ''}`}></div>
     </div>
   );
 
   return (
-    // La classe 'hidden' s'ajoute si isVisible est faux, déclenchant l'animation CSS
     <div className={`tabbar-global-wrapper ${isVisible ? '' : 'hidden'}`}>
       <style>{`
         /* POSITIONNEMENT GLOBAL ET ANIMATION HIDE/SHOW */
@@ -35,7 +33,6 @@ export default function TabBar() {
           position: fixed !important;
           bottom: 25px !important;
           left: 50% !important;
-          /* On ajoute une variable translateY pour gérer le glissement vers le bas */
           transform: translateX(-50%) translateY(var(--translate-y, 0)) !important;
           transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
           z-index: 999999 !important; 
@@ -46,7 +43,6 @@ export default function TabBar() {
           gap: 8px; 
         }
 
-        /* Quand la barre est cachée, elle descend de 145px */
         .tabbar-global-wrapper.hidden {
           --translate-y: 145px;
         }
@@ -55,8 +51,8 @@ export default function TabBar() {
         .toggle-btn {
           width: 50px;
           height: 25px;
-          border-radius: 15px 15px 0 0; /* Arrondi en haut, plat en bas */
-          background: rgba(255, 255, 255, 0.05); /* Très transparent */
+          border-radius: 15px 15px 0 0;
+          background: rgba(255, 255, 255, 0.05);
           backdrop-filter: blur(15px);
           -webkit-backdrop-filter: blur(15px);
           border: 1px solid rgba(255, 255, 255, 0.2);
@@ -65,7 +61,7 @@ export default function TabBar() {
           justify-content: center;
           align-items: center;
           cursor: pointer;
-          margin-bottom: -2px; /* Colle le bouton à la barre */
+          margin-bottom: -2px;
           z-index: 20;
           color: rgba(255, 255, 255, 0.8);
           box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
@@ -77,16 +73,14 @@ export default function TabBar() {
           transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* Tourne la flèche quand c'est caché */
         .hidden .toggle-icon {
           transform: rotate(180deg);
         }
 
         /* L'EFFET VERRE ULTRA-TRANSPARENT */
         .glass-row, .glass-padlock {
-          /* On baisse drastiquement l'opacité (0.05 au lieu de 0.4) pour plus de transparence */
           background: rgba(255, 255, 255, 0.05); 
-          backdrop-filter: blur(25px); /* On augmente le flou pour garder l'effet verre */
+          backdrop-filter: blur(25px);
           -webkit-backdrop-filter: blur(25px);
           border: 1px solid rgba(255, 255, 255, 0.15);
           border-top: 1px solid rgba(255, 255, 255, 0.3);
@@ -97,6 +91,7 @@ export default function TabBar() {
           
           position: relative;
           overflow: hidden; 
+          transition: all 0.4s ease; /* Ajout d'une transition pour que le fond disparaisse en douceur */
         }
 
         .glass-row {
@@ -115,6 +110,15 @@ export default function TabBar() {
           display: flex;
           justify-content: center;
           align-items: center;
+        }
+
+        /* --- NOUVEAU : CLASSE POUR RENDRE TRANSPARENT SUR LA MAISON --- */
+        .transparent-maison {
+          background: transparent !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          border-color: transparent !important;
+          box-shadow: none !important;
         }
 
         /* COMPORTEMENT DES BOUTONS */
@@ -155,21 +159,21 @@ export default function TabBar() {
         .water-snack { background: linear-gradient(to top, rgba(255, 105, 180, 0.5), rgba(255, 105, 180, 0.05)); }
         .water-admin { background: linear-gradient(to top, rgba(255, 69, 0, 0.5), rgba(255, 69, 0, 0.05)); }
         
-        /* Nouveau Liquide Maison (Plein écran, mix des couleurs du site) */
+        /* Liquide Maison : transparent pour n'avoir aucune couleur */
         .water-maison { 
-          background: linear-gradient(to top, rgba(0, 255, 255, 0.4), rgba(255, 105, 180, 0.15), rgba(57, 255, 20, 0.05)); 
+          background: transparent !important; 
         }
       `}</style>
 
       {/* BOUTON POUR MASQUER/AFFICHER */}
-      <button className="toggle-btn" onClick={toggleVisibility}>
+      <button className={`toggle-btn ${activeTab === 'maison' ? 'transparent-maison' : ''}`} onClick={toggleVisibility}>
         <svg className="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
       </button>
 
-      {/* --- LIGNE DE 3 --- */}
-      <div className="glass-row">
+      {/* --- LIGNE DE 3 (Devient transparente sur la maison) --- */}
+      <div className={`glass-row ${activeTab === 'maison' ? 'transparent-maison' : ''}`}>
         <LiquidBackground />
         
         {/* Bouton 1 : Coin Vert */}
@@ -200,8 +204,8 @@ export default function TabBar() {
         </button>
       </div>
 
-      {/* --- LE 4ÈME BOUTON (CADENAS ADMIN) --- */}
-      <div className="glass-padlock">
+      {/* --- LE 4ÈME BOUTON (Devient transparent sur la maison) --- */}
+      <div className={`glass-padlock ${activeTab === 'maison' ? 'transparent-maison' : ''}`}>
         <LiquidBackground />
         
         <button className={`tab-btn padlock-btn ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => handleTab('admin')}>
