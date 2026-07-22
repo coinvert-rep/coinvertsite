@@ -90,35 +90,7 @@ export default function Accueil() {
         </main>
       </div>
 
-      {/* COUCHE 3 : La TabBar (Totalement isolée du reste) */}
-      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, height: '100px', zIndex: 50, pointerEvents: 'none' }}>
-        <div 
-          style={{ pointerEvents: 'auto' }}
-          className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-center p-2 rounded-full transition-colors duration-300 ${
-            ongletActif === 'maison' 
-              ? 'bg-transparent border-none' 
-              : 'bg-black/60 backdrop-blur-md border border-white/20'
-          }`}
-        >
-          <button 
-            onClick={() => setOngletActif('feuille')} 
-            className="p-3 mx-2 text-2xl hover:scale-110 transition-transform"
-          >
-            🍃
-          </button>
-          <button 
-            onClick={() => setOngletActif('maison')} 
-            className="p-3 mx-2 text-2xl hover:scale-110 transition-transform"
-          >
-            🏠
-          </button>
-          <button 
-            onClick={() => setOngletActif('cafe')} 
-            className="p-3 mx-2 text-2xl hover:scale-110 transition-transform"
-          >
-            ☕
-          </button>
-        </div>
+
       </div>
     </>
   );

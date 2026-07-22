@@ -20,7 +20,7 @@ export default function TabBar() {
       <div className={`water-layer water-snack ${activeTab === 'snack' ? 'show' : ''}`}></div>
       <div className={`water-layer water-admin ${activeTab === 'admin' ? 'show' : ''}`}></div>
       
-      {/* L'eau de la maison est maintenant transparente */}
+      {/* L'eau de la maison est transparente */}
       <div className={`water-layer water-maison ${activeTab === 'maison' ? 'show' : ''}`}></div>
     </div>
   );
@@ -91,7 +91,7 @@ export default function TabBar() {
           
           position: relative;
           overflow: hidden; 
-          transition: all 0.4s ease; /* Ajout d'une transition pour que le fond disparaisse en douceur */
+          transition: all 0.4s ease;
         }
 
         .glass-row {
@@ -112,7 +112,7 @@ export default function TabBar() {
           align-items: center;
         }
 
-        /* --- NOUVEAU : CLASSE POUR RENDRE TRANSPARENT SUR LA MAISON --- */
+        /* CLASSE POUR RENDRE TRANSPARENT SUR LA MAISON */
         .transparent-maison {
           background: transparent !important;
           backdrop-filter: none !important;
@@ -129,14 +129,30 @@ export default function TabBar() {
         }
         .padlock-btn { width: 100%; }
 
-        /* LES ICÔNES SVG */
+        /* NOUVEAU : STYLE DES ICÔNES EMOJIS */
+        .emoji-icon {
+          font-size: 28px;
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          display: inline-block;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .tab-btn:hover .emoji-icon { 
+          transform: scale(1.15); 
+        }
+        
+        .tab-btn.active .emoji-icon {
+          transform: scale(1.3);
+          filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); 
+        }
+
+        /* Le cadenas SVG (on le garde en SVG car tu n'avais pas d'emoji pour lui) */
         .icon-svg {
           width: 26px; height: 26px; fill: none;
           stroke: rgba(255, 255, 255, 0.6);
           stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
           transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         .tab-btn:hover .icon-svg { stroke: rgba(255, 255, 255, 0.9); transform: scale(1.1); }
         .tab-btn.active .icon-svg {
           stroke: rgba(255, 255, 255, 1); transform: scale(1.2);
@@ -154,15 +170,10 @@ export default function TabBar() {
 
         .water-layer.show { opacity: 1; transform: translateY(0); }
 
-        /* Les couleurs de l'eau */
         .water-vert { background: linear-gradient(to top, rgba(57, 255, 20, 0.5), rgba(57, 255, 20, 0.05)); }
         .water-snack { background: linear-gradient(to top, rgba(255, 105, 180, 0.5), rgba(255, 105, 180, 0.05)); }
         .water-admin { background: linear-gradient(to top, rgba(255, 69, 0, 0.5), rgba(255, 69, 0, 0.05)); }
-        
-        /* Liquide Maison : transparent pour n'avoir aucune couleur */
-        .water-maison { 
-          background: transparent !important; 
-        }
+        .water-maison { background: transparent !important; }
       `}</style>
 
       {/* BOUTON POUR MASQUER/AFFICHER */}
@@ -176,35 +187,23 @@ export default function TabBar() {
       <div className={`glass-row ${activeTab === 'maison' ? 'transparent-maison' : ''}`}>
         <LiquidBackground />
         
-        {/* Bouton 1 : Coin Vert */}
+        {/* Bouton 1 : Coin Vert (Emoji Feuille) */}
         <button className={`tab-btn ${activeTab === 'vert' ? 'active' : ''}`} onClick={() => handleTab('vert')}>
-          <svg className="icon-svg" viewBox="0 0 24 24">
-            <path d="M2 22c5-10 12-14 20-14-3 9-9 14-20 14z" />
-            <path d="M2 22l8-8" />
-          </svg>
+          <span className="emoji-icon">🍃</span>
         </button>
 
-        {/* Bouton 2 : Maison */}
+        {/* Bouton 2 : Maison (Emoji Maison) */}
         <button className={`tab-btn ${activeTab === 'maison' ? 'active' : ''}`} onClick={() => handleTab('maison')}>
-          <svg className="icon-svg" viewBox="0 0 24 24">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
+          <span className="emoji-icon">🏠</span>
         </button>
 
-        {/* Bouton 3 : Coin Snack */}
+        {/* Bouton 3 : Coin Snack (Emoji Café) */}
         <button className={`tab-btn ${activeTab === 'snack' ? 'active' : ''}`} onClick={() => handleTab('snack')}>
-          <svg className="icon-svg" viewBox="0 0 24 24">
-            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-            <line x1="6" y1="1" x2="6" y2="4" />
-            <line x1="10" y1="1" x2="10" y2="4" />
-            <line x1="14" y1="1" x2="14" y2="4" />
-          </svg>
+          <span className="emoji-icon">☕</span>
         </button>
       </div>
 
-      {/* --- LE 4ÈME BOUTON (Devient transparent sur la maison) --- */}
+      {/* --- LE 4ÈME BOUTON (Cadenas SVG conservé) --- */}
       <div className={`glass-padlock ${activeTab === 'maison' ? 'transparent-maison' : ''}`}>
         <LiquidBackground />
         
