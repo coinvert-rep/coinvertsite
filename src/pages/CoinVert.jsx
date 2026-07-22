@@ -17,7 +17,7 @@ const MOCK_PRODUCTS = [
 ];
 
 export default function CoinVert() {
-  const [rayonActif, setRayonActif] = useState("SMOKESHOP"); // Par défaut sur Smokeshop vu le logo
+  const [rayonActif, setRayonActif] = useState("SMOKESHOP");
   const [sousCategorieActive, setSousCategorieActive] = useState("Tout");
 
   const changerRayon = (nouveauRayon) => {
@@ -32,49 +32,51 @@ export default function CoinVert() {
   });
 
   return (
-    // Fond global très sombre pour faire ressortir les couleurs du logo
-    <div className="min-h-screen bg-[#08090a] text-white pb-[150px] font-sans selection:bg-[#4a8b41] selection:text-white">
+    // Application de la police Oswald (ou alternative condensée) par défaut sur toute la page
+    <div className="min-h-screen bg-[#08090a] text-white pb-[150px]" style={{ fontFamily: '"Oswald", sans-serif' }}>
       
-      {/* --- EN-TÊTE IMMERSIF (HEADER) --- */}
+      {/* --- EN-TÊTE IMMERSIF --- */}
       <header className="relative pt-12 pb-10 px-6 text-center overflow-hidden border-b border-white/5 bg-black/40">
         
-        {/* 
-          ANIMATION DE FUMÉE (CSS) + EMPLACEMENT POUR TES IMAGES
-          mix-blend-screen permet à la fumée de s'incruster parfaitement sans fond noir visible
-        */}
+        {/* Animation de fumée CSS (En attendant tes vraies images) */}
         <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen overflow-hidden flex items-center justify-center">
-          {/* Si tu as un vrai PNG de fumée, décommente la ligne ci-dessous et mets le bon chemin */}
-          {/* <img src="/chemin/vers/ta-fumee.png" alt="" className="absolute w-full h-full object-cover opacity-60 smoke-anim" /> */}
-          
-          {/* Fumée CSS de secours (très sobre, de couleur verte et rouille) */}
           <div className="absolute w-[150%] h-[150%] bg-[radial-gradient(ellipse_at_center,_rgba(74,139,65,0.15)_0%,_rgba(0,0,0,0)_60%)] smoke-anim-1"></div>
           <div className="absolute w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_rgba(180,50,40,0.1)_0%,_rgba(0,0,0,0)_60%)] smoke-anim-2"></div>
         </div>
 
-        {/* TYPOGRAPHIE INSPIRÉE DU LOGO */}
+        {/* TYPOGRAPHIE EXACTE DU LOGO */}
         <div className="relative z-10 flex flex-col items-center">
-          <h2 className="text-[#b43228] uppercase tracking-[0.3em] text-xs sm:text-sm font-semibold mb-3 opacity-90" style={{ fontFamily: 'Georgia, serif' }}>
+          <h2 
+            className="text-[#b43228] uppercase text-xl sm:text-2xl mb-2 opacity-90" 
+            style={{ fontFamily: '"Cheddar Gothic Rough", sans-serif', letterSpacing: '0.15em' }}
+          >
             Engrais Spécialisés
           </h2>
           
-          <h1 className="text-5xl sm:text-6xl font-black uppercase tracking-wider drop-shadow-lg mb-1 flex gap-3">
+          <h1 
+            className="text-6xl sm:text-7xl uppercase mb-1 flex gap-3" 
+            style={{ fontFamily: '"Kiln Sans Regular", sans-serif', textShadow: '0px 4px 15px rgba(0,0,0,0.5)' }}
+          >
             <span className="text-gray-200">Le Coin</span>
             <span className="text-[#4a8b41]">Vert</span>
           </h1>
           
-          <h3 className="text-[#b43228] uppercase tracking-[0.2em] text-xl sm:text-2xl font-bold font-serif opacity-95">
+          <h3 
+            className="text-[#b43228] uppercase text-3xl sm:text-4xl opacity-95 mt-1" 
+            style={{ fontFamily: '"Cheddar Gothic Rough", sans-serif', letterSpacing: '0.1em' }}
+          >
             Smoke Shop
           </h3>
         </div>
       </header>
 
       {/* --- SÉLECTEUR NIVEAU 1 : VAPESHOP vs SMOKESHOP --- */}
-      {/* Design "Hardware/Tactique" : boutons sombres avec lueur subtile */}
       <div className="flex justify-center px-6 mt-8">
         <div className="bg-[#0b0d0f] p-1.5 rounded-xl border border-white/5 flex w-full max-w-md shadow-2xl">
           <button 
             onClick={() => changerRayon("VAPESHOP")}
-            className={`flex-1 py-3 text-sm tracking-wider font-bold rounded-lg transition-all duration-500 uppercase ${
+            style={{ fontFamily: '"Cheddar Gothic Rough", sans-serif', letterSpacing: '0.1em' }}
+            className={`flex-1 py-3 text-lg rounded-lg transition-all duration-500 uppercase ${
               rayonActif === "VAPESHOP" 
                 ? 'bg-gradient-to-b from-[#1a1c20] to-[#0b0d0f] text-[#4a8b41] border border-[#4a8b41]/30 shadow-[0_0_20px_rgba(74,139,65,0.15)]' 
                 : 'text-gray-500 hover:text-gray-300 border border-transparent'
@@ -84,7 +86,8 @@ export default function CoinVert() {
           </button>
           <button 
             onClick={() => changerRayon("SMOKESHOP")}
-            className={`flex-1 py-3 text-sm tracking-wider font-bold rounded-lg transition-all duration-500 uppercase ${
+            style={{ fontFamily: '"Cheddar Gothic Rough", sans-serif', letterSpacing: '0.1em' }}
+            className={`flex-1 py-3 text-lg rounded-lg transition-all duration-500 uppercase ${
               rayonActif === "SMOKESHOP" 
                 ? 'bg-gradient-to-b from-[#1a1c20] to-[#0b0d0f] text-[#b43228] border border-[#b43228]/30 shadow-[0_0_20px_rgba(180,50,40,0.15)]' 
                 : 'text-gray-500 hover:text-gray-300 border border-transparent'
@@ -99,14 +102,13 @@ export default function CoinVert() {
       <div className="flex gap-2 px-6 mt-8 overflow-x-auto pb-4 scrollbar-hide justify-start md:justify-center" style={{ scrollbarWidth: 'none' }}>
         {CATEGORIES[rayonActif].map(cat => {
           const isActive = sousCategorieActive === cat;
-          // La couleur d'accentuation change selon le rayon (Vert ou Rouge rouille)
           const accentColor = rayonActif === "SMOKESHOP" ? 'bg-[#b43228] text-white' : 'bg-[#4a8b41] text-white';
           
           return (
             <button 
               key={cat}
               onClick={() => setSousCategorieActive(cat)}
-              className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-semibold tracking-wide transition-all duration-300 ${
+              className={`whitespace-nowrap px-5 py-2 rounded-md text-sm tracking-widest uppercase transition-all duration-300 ${
                 isActive 
                   ? accentColor 
                   : 'bg-[#15171a] text-gray-400 border border-white/5 hover:bg-[#1f2226] hover:text-gray-200' 
@@ -125,22 +127,25 @@ export default function CoinVert() {
             key={produit.id} 
             className="bg-[#0b0d0f]/80 backdrop-blur-md border border-white/5 rounded-2xl p-4 flex flex-col items-center text-center transition-all duration-300 group hover:bg-[#121418] hover:border-white/10"
           >
-            {/* Zone image (sobre, fond très sombre) */}
             <div className="w-full aspect-square rounded-xl bg-[#050607] border border-white/5 flex items-center justify-center text-4xl mb-4 group-hover:scale-95 transition-transform duration-500 shadow-inner">
               {produit.image}
             </div>
             
-            {/* Textes du produit */}
-            <h3 className="font-semibold text-gray-200 text-sm md:text-base leading-tight mb-1">{produit.nom}</h3>
-            <span className="text-[10px] uppercase tracking-widest text-gray-500 mb-auto">{produit.sousCategorie}</span>
+            {/* Titre du produit avec la police Cheddar */}
+            <h3 
+              className="text-gray-200 text-lg leading-tight mb-1"
+              style={{ fontFamily: '"Cheddar Gothic Rough", sans-serif', letterSpacing: '0.05em' }}
+            >
+              {produit.nom}
+            </h3>
             
-            {/* Prix (Couleur dynamique selon le rayon) */}
-            <p className={`font-bold mt-3 text-lg ${produit.rayon === 'SMOKESHOP' ? 'text-[#b43228]' : 'text-[#4a8b41]'}`}>
+            <span className="text-[11px] uppercase tracking-widest text-gray-500 mb-auto">{produit.sousCategorie}</span>
+            
+            <p className={`font-semibold mt-3 text-xl tracking-wider ${produit.rayon === 'SMOKESHOP' ? 'text-[#b43228]' : 'text-[#4a8b41]'}`}>
               {produit.prix.toFixed(2)} $
             </p>
 
-            {/* Bouton d'ajout */}
-            <button className={`mt-4 w-full py-2.5 rounded-xl border border-white/10 text-xs font-bold uppercase tracking-wider transition-colors duration-300 ${
+            <button className={`mt-4 w-full py-2.5 rounded-md border border-white/10 text-sm tracking-widest uppercase transition-colors duration-300 ${
               produit.rayon === 'SMOKESHOP' 
                 ? 'bg-[#15171a] text-gray-300 hover:bg-[#b43228] hover:text-white hover:border-[#b43228]' 
                 : 'bg-[#15171a] text-gray-300 hover:bg-[#4a8b41] hover:text-white hover:border-[#4a8b41]'
@@ -151,27 +156,13 @@ export default function CoinVert() {
         ))}
       </div>
 
-      {/* --- CSS POUR L'ANIMATION DE FUMÉE --- */}
       <style>{`
-        .smoke-anim-1 {
-          animation: smoke-drift 20s infinite alternate ease-in-out;
-          filter: blur(40px);
-        }
-        .smoke-anim-2 {
-          animation: smoke-drift 25s infinite alternate-reverse ease-in-out;
-          filter: blur(50px);
-        }
+        .smoke-anim-1 { animation: smoke-drift 20s infinite alternate ease-in-out; filter: blur(40px); }
+        .smoke-anim-2 { animation: smoke-drift 25s infinite alternate-reverse ease-in-out; filter: blur(50px); }
         @keyframes smoke-drift {
           0% { transform: translate(-5%, -5%) scale(1); opacity: 0.3; }
           50% { transform: translate(5%, 10%) scale(1.1); opacity: 0.6; }
           100% { transform: translate(-10%, 5%) scale(1.05); opacity: 0.4; }
-        }
-        .smoke-anim {
-          animation: smoke-pulse 15s infinite alternate ease-in-out;
-        }
-        @keyframes smoke-pulse {
-          0% { opacity: 0.4; transform: scale(1.02) rotate(-1deg); }
-          100% { opacity: 0.7; transform: scale(1.08) rotate(1deg); }
         }
       `}</style>
     </div>
