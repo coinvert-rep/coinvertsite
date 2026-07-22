@@ -1,6 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+// Assure-toi que ton fichier CSS global est bien importé (par ex. dans main.jsx ou ici)
+// pour que l'animation de la carte fonctionne.
 
 export default function Accueil() {
+  // État pour gérer l'onglet actif (maison par défaut)
+  const [ongletActif, setOngletActif] = useState('maison');
+
   const particles = useMemo(() => {
     return Array.from({ length: 200 }).map((_, i) => {
       return {
@@ -64,14 +69,57 @@ export default function Accueil() {
 
       {/* COUCHE 2 : Contenu principal (défile au-dessus des particules, z-index: 10) */}
       <div style={{ position: 'relative', zIndex: 10, minHeight: '100vh', width: '100%' }}>
-        <main style={{ padding: '20px', paddingBottom: '150px', color: 'white', textAlign: 'center' }}>
-          <h1 style={{ marginTop: '50px' }}>Le Coin Vert x Snack</h1>
+        
+        {/* Carte Défilante (Affichée uniquement sur l'onglet 'maison') */}
+        {ongletActif === 'maison' && (
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-11/12 max-w-3xl overflow-hidden rounded-xl bg-black/30 backdrop-blur-sm border border-white/10 p-3 text-white">
+            <div className="defilement-texte flex gap-12 whitespace-nowrap">
+              <span>🎉 Promo de la semaine : -20% sur la nouvelle collection !</span>
+              <span>📢 Actualité : Nouveau drop ce vendredi à 18h !</span>
+              <span>⭐ N'oubliez pas de vérifier vos points de fidélité.</span>
+              {/* Répéter les éléments pour créer un effet infini fluide */}
+              <span>🎉 Promo de la semaine : -20% sur la nouvelle collection !</span>
+            </div>
+          </div>
+        )}
+
+        <main style={{ padding: '20px', paddingBottom: '150px', color: 'white', textAlign: 'center', paddingTop: '120px' }}>
+          <h1>Le Coin Vert x Snack</h1>
           <p>La barre devrait s'afficher tout en bas !</p>
+          <p className="mt-4 opacity-50">Onglet actuellement actif : {ongletActif}</p>
         </main>
       </div>
 
       {/* COUCHE 3 : La TabBar (Totalement isolée du reste) */}
-
+      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, height: '100px', zIndex: 50, pointerEvents: 'none' }}>
+        <div 
+          style={{ pointerEvents: 'auto' }}
+          className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-center p-2 rounded-full transition-colors duration-300 ${
+            ongletActif === 'maison' 
+              ? 'bg-transparent border-none' 
+              : 'bg-black/60 backdrop-blur-md border border-white/20'
+          }`}
+        >
+          <button 
+            onClick={() => setOngletActif('feuille')} 
+            className="p-3 mx-2 text-2xl hover:scale-110 transition-transform"
+          >
+            🍃
+          </button>
+          <button 
+            onClick={() => setOngletActif('maison')} 
+            className="p-3 mx-2 text-2xl hover:scale-110 transition-transform"
+          >
+            🏠
+          </button>
+          <button 
+            onClick={() => setOngletActif('cafe')} 
+            className="p-3 mx-2 text-2xl hover:scale-110 transition-transform"
+          >
+            ☕
+          </button>
+        </div>
+      </div>
     </>
   );
 }

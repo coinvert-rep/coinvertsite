@@ -182,3 +182,23 @@
     border-right-color: var(--border);
   }
 }
+
+/* Animation pour la carte défilante des promotions */
+.defilement-texte {
+  display: flex;
+  width: max-content;
+  animation: defilement 20s linear infinite;
+}
+
+@keyframes defilement {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%); /* Ajuste selon la longueur du texte dupliqué */
+  }
+}
+
+.defilement-texte:hover {
+  animation-play-state: paused;
+}
