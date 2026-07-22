@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
-/* Importation d'Oswald pour les petits blocs de texte (similaire au style Cheddar mais lisible) */
+/* Importation d'Oswald pour les petits textes de la boutique */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap');
 
-/* Déclaration de tes polices locales */
+/* Déclaration de tes fichiers .otf locaux */
 @font-face {
   font-family: 'Cheddar Gothic Rough';
-  src: url('./assets/fonts/CheddarGothicRough.woff2') format('woff2'),
-       url('./assets/fonts/CheddarGothicRough.ttf') format('truetype');
+  /* Assure-toi que le nom du fichier correspond exactement au tien */
+  src: url('./assets/fonts/CheddarGothicRough.otf') format('opentype'); 
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Kiln Sans Regular';
-  src: url('./assets/fonts/KilnSans-Regular.woff2') format('woff2'),
-       url('./assets/fonts/KilnSans-Regular.ttf') format('truetype');
+  /* Assure-toi que le nom du fichier correspond exactement au tien */
+  src: url('./assets/fonts/KilnSans-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
