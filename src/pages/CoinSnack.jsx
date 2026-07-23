@@ -41,39 +41,39 @@ export default function CoinSnack() {
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
       color: CANDY_COLORS[Math.floor(Math.random() * CANDY_COLORS.length)],
-      size: `${Math.random() * 8 + 4}px`, // Taille entre 4px et 12px
-      delay: `${Math.random() * 5}s`, // Délai d'animation aléatoire
-      duration: `${Math.random() * 10 + 15}s`, // Vitesse de flottaison
+      size: `${Math.random() * 8 + 4}px`, 
+      delay: `${Math.random() * 5}s`, 
+      duration: `${Math.random() * 10 + 15}s`, 
     }));
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#08090a] text-white pb-[150px] font-oswald selection:bg-[#ff9ff3] selection:text-white">
+    <div className="min-h-screen bg-[#08090a] text-white pb-[150px] font-oswald selection:bg-[#ff9ff3] selection:text-white relative">
       
-      {/* --- EN-TÊTE IMMERSIF (SNACK EDITION) --- */}
-      <header className="relative pt-12 pb-10 px-6 text-center overflow-hidden border-b border-white/5 bg-black/40">
-        
-        {/* ARRIÈRE-PLAN ANIMÉ : Éclats de Bonbons */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {particules.map((p) => (
-            <div
-              key={p.id}
-              className="absolute rounded-full candy-particle"
-              style={{
-                left: p.left,
-                top: p.top,
-                backgroundColor: p.color,
-                width: p.size,
-                height: p.size,
-                boxShadow: `0 0 10px ${p.color}`,
-                animationDelay: p.delay,
-                animationDuration: p.duration,
-              }}
-            />
-          ))}
-        </div>
+      {/* --- ARRIÈRE-PLAN ANIMÉ GLOBAL (Sur toute la page) --- */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {particules.map((p) => (
+          <div
+            key={p.id}
+            className="absolute rounded-full candy-particle"
+            style={{
+              left: p.left,
+              top: p.top,
+              backgroundColor: p.color,
+              width: p.size,
+              height: p.size,
+              boxShadow: `0 0 10px ${p.color}`,
+              animationDelay: p.delay,
+              animationDuration: p.duration,
+            }}
+          />
+        ))}
+      </div>
 
-        <div className="relative z-10 flex flex-col items-center">
+      {/* --- EN-TÊTE IMMERSIF (SNACK EDITION) --- */}
+      <header className="relative z-10 pt-12 pb-10 px-6 text-center overflow-hidden border-b border-white/5 bg-black/40">
+        
+        <div className="relative flex flex-col items-center">
           <h2 className="font-cheddar text-[#ff9ff3] uppercase text-xl sm:text-2xl mb-4 opacity-90 tracking-[0.15em]">
             Munchies & Douceurs
           </h2>
@@ -81,13 +81,13 @@ export default function CoinSnack() {
           {/* CONTENEUR TITRE + LOGOS OURSONS */}
           <div className="flex items-center justify-center gap-2 sm:gap-6 mb-2">
             
-            {/* Ourson Gauche (Regarde vers la droite) */}
+            {/* Ourson Gauche (Inversé pour regarder vers le centre) avec ombre réduite */}
             <img 
-              src="/logo snack v1.png" 
+              src="/logo snack v1 mirroir.jpg" 
               alt="Ourson Gauche" 
-              className="w-20 sm:w-32 h-auto object-contain drop-shadow-[0_0_20px_rgba(255,159,243,0.3)]" 
+              className="w-20 sm:w-32 h-auto object-contain drop-shadow-[0_0_8px_rgba(255,159,243,0.15)]" 
               style={{
-                mixBlendMode: 'screen', // Supprime le fond noir du jpg
+                mixBlendMode: 'screen',
                 WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)',
                 maskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)'
               }}
@@ -98,13 +98,13 @@ export default function CoinSnack() {
               <span className="text-[#ff9ff3]">Snack</span>
             </h1>
 
-            {/* Ourson Droit (Miroir, regarde vers la gauche) */}
+            {/* Ourson Droit (Normal pour regarder vers le centre) avec ombre réduite */}
             <img 
-              src="/logo snack v1 mirroir.png" 
+              src="/logo snack v1.jpg" 
               alt="Ourson Droit" 
-              className="w-20 sm:w-32 h-auto object-contain drop-shadow-[0_0_20px_rgba(72,219,251,0.3)]" 
+              className="w-20 sm:w-32 h-auto object-contain drop-shadow-[0_0_8px_rgba(72,219,251,0.15)]" 
               style={{ 
-                mixBlendMode: 'screen', // Supprime le fond noir du jpg
+                mixBlendMode: 'screen',
                 WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)',
                 maskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)'
               }}
@@ -119,13 +119,12 @@ export default function CoinSnack() {
       </header>
 
       {/* --- SÉLECTEUR NIVEAU 1 : SUCRÉ vs SALÉ --- */}
-      <div className="flex justify-center px-6 mt-8">
-        <div className="bg-[#0b0d0f] p-1.5 rounded-xl border border-white/5 flex w-full max-w-md shadow-2xl relative z-10">
+      <div className="flex justify-center px-6 mt-8 relative z-10">
+        <div className="bg-[#0b0d0f] p-1.5 rounded-xl border border-white/5 flex w-full max-w-md shadow-2xl">
           <button 
             onClick={() => changerRayon("SUCRÉ")}
             className={`font-cheddar flex-1 py-3 text-xl tracking-[0.1em] rounded-lg transition-all duration-500 uppercase ${
               rayonActif === "SUCRÉ" 
-                /* THÈME ROSE BONBON POUR LE SUCRÉ */
                 ? 'bg-gradient-to-b from-[#1a1c20] to-[#0b0d0f] text-[#ff9ff3] border border-[#ff9ff3]/30 shadow-[0_0_20px_rgba(255,159,243,0.15)]' 
                 : 'text-gray-500 hover:text-gray-300 border border-transparent'
             }`}
@@ -136,7 +135,6 @@ export default function CoinSnack() {
             onClick={() => changerRayon("SALÉ_SOIF")}
             className={`font-cheddar flex-1 py-3 text-xl tracking-[0.1em] rounded-lg transition-all duration-500 uppercase ${
               rayonActif === "SALÉ_SOIF" 
-                /* THÈME BLEU CYAN POUR LE SALÉ ET SOIF */
                 ? 'bg-gradient-to-b from-[#1a1c20] to-[#0b0d0f] text-[#48dbfb] border border-[#48dbfb]/30 shadow-[0_0_20px_rgba(72,219,251,0.15)]' 
                 : 'text-gray-500 hover:text-gray-300 border border-transparent'
             }`}
