@@ -47,17 +47,18 @@ export default function CoinVert() {
             Engrais Spécialisés
           </h2>
           
-          {/* CONTENEUR TITRE + LOGOS AVEC FONDU */}
+          {/* CONTENEUR TITRE + LOGOS AVEC FONDU CORRIGÉ */}
           <div className="flex items-center justify-center gap-4 sm:gap-8 mb-2">
             
-            {/* Rectangle Vert Gauche : Logo avec fondu radial */}
+            {/* Rectangle Vert Gauche : Logo avec fondu radial plus serré */}
             <img 
               src="/masque.png" 
               alt="Logo Gauche" 
               className="w-14 sm:w-24 h-auto object-contain opacity-90 drop-shadow-[0_0_15px_rgba(74,139,65,0.2)]" 
               style={{
-                WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)',
-                maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
+                mixBlendMode: 'screen', // Élimine les résidus sombres
+                WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
+                maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
               }}
             />
 
@@ -66,15 +67,16 @@ export default function CoinVert() {
               <span className="text-[#4a8b41]">Vert</span>
             </h1>
 
-            {/* Rectangle Vert Droit : Logo en miroir avec fondu radial */}
+            {/* Rectangle Vert Droit : Logo en miroir avec fondu radial plus serré */}
             <img 
               src="/masque.png" 
               alt="Logo Droit" 
               className="w-14 sm:w-24 h-auto object-contain opacity-90 drop-shadow-[0_0_15px_rgba(180,50,40,0.2)]" 
               style={{ 
                 transform: 'scaleX(-1)', 
-                WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)',
-                maskImage: 'radial-gradient(circle at center, black 40%, transparent 90%)'
+                mixBlendMode: 'screen', // Élimine les résidus sombres
+                WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
+                maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
               }}
             />
 
@@ -87,7 +89,7 @@ export default function CoinVert() {
       </header>
 
       {/* --- SÉLECTEUR NIVEAU 1 : VAPESHOP vs SMOKESHOP --- */}
-      <div className="flex justify-center px-6 mt-8">
+      <div className="flex justify-center px-6 mt-8 relative z-10">
         <div className="bg-[#0b0d0f] p-1.5 rounded-xl border border-white/5 flex w-full max-w-md shadow-2xl">
           <button 
             onClick={() => changerRayon("VAPESHOP")}
@@ -113,7 +115,7 @@ export default function CoinVert() {
       </div>
 
       {/* --- SÉLECTEUR NIVEAU 2 : SOUS-CATÉGORIES --- */}
-      <div className="flex gap-2 px-6 mt-8 overflow-x-auto pb-4 scrollbar-hide justify-start md:justify-center" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex gap-2 px-6 mt-8 overflow-x-auto pb-4 scrollbar-hide justify-start md:justify-center relative z-10" style={{ scrollbarWidth: 'none' }}>
         {CATEGORIES[rayonActif].map(cat => {
           const isActive = sousCategorieActive === cat;
           const accentColor = rayonActif === "VAPESHOP" ? 'bg-[#b43228] text-white' : 'bg-[#4a8b41] text-white';
@@ -135,7 +137,7 @@ export default function CoinVert() {
       </div>
 
       {/* --- GRILLE DE PRODUITS --- */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-6 mt-4 max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-6 mt-4 max-w-7xl mx-auto relative z-10">
         {produitsFiltres.map(produit => (
           <div 
             key={produit.id} 
