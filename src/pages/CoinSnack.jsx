@@ -83,7 +83,7 @@ export default function CoinSnack() {
             
             {/* Ourson Gauche (Regarde vers la droite) */}
             <img 
-              src="/logo snack v1.jpg" 
+              src="/logo snack v1.png" 
               alt="Ourson Gauche" 
               className="w-20 sm:w-32 h-auto object-contain drop-shadow-[0_0_20px_rgba(255,159,243,0.3)]" 
               style={{
@@ -100,7 +100,7 @@ export default function CoinSnack() {
 
             {/* Ourson Droit (Miroir, regarde vers la gauche) */}
             <img 
-              src="/logo snack v1 mirroir.jpg" 
+              src="/logo snack v1 mirroir.png" 
               alt="Ourson Droit" 
               className="w-20 sm:w-32 h-auto object-contain drop-shadow-[0_0_20px_rgba(72,219,251,0.3)]" 
               style={{ 
