@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+
+// Couleurs pour les particules : nuances de vert (weed/nature) et de gris/blanc (fumée/vape)
+const PARTICLE_COLORS = ['#4a8b41', '#2d5a27', '#888888', '#cccccc', '#555555', '#a8e6cf'];
 
 const CATEGORIES = {
   VAPESHOP: ["Tout", "Pièces", "Kit (Prêt à remplir)", "Accessoire (Autre)", "Juice"],
@@ -31,12 +34,46 @@ export default function CoinVert() {
     return correspondRayon && correspondSousCat;
   });
 
+  // Générateur de particules (pollen/fumée)
+  const particules = useMemo(() => {
+    return Array.from({ length: 50 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+      size: `${Math.random() * 6 + 3}px`, // Plus petits que les bonbons (3px à 9px)
+      delay: `${Math.random() * 5}s`,
+      duration: `${Math.random() * 15 + 15}s`, // Flottent plus lentement (15s à 30s)
+    }));
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#08090a] text-white pb-[150px] font-oswald selection:bg-[#4a8b41] selection:text-white">
+    <div className="min-h-screen bg-[#08090a] text-white pb-[150px] font-oswald selection:bg-[#4a8b41] selection:text-white relative">
       
+      {/* --- ARRIÈRE-PLAN ANIMÉ GLOBAL (Particules Vertes et Grises) --- */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {particules.map((p) => (
+          <div
+            key={p.id}
+            className="absolute rounded-full weed-smoke-particle"
+            style={{
+              left: p.left,
+              top: p.top,
+              backgroundColor: p.color,
+              width: p.size,
+              height: p.size,
+              boxShadow: `0 0 12px ${p.color}`, // Halo lumineux plus doux
+              animationDelay: p.delay,
+              animationDuration: p.duration,
+            }}
+          />
+        ))}
+      </div>
+
       {/* --- EN-TÊTE IMMERSIF --- */}
-      <header className="relative pt-12 pb-10 px-6 text-center overflow-hidden border-b border-white/5 bg-black/40">
+      <header className="relative z-10 pt-12 pb-10 px-6 text-center overflow-hidden border-b border-white/5 bg-black/40">
         
+        {/* On garde les gros nuages de fumée du header, ça ajoute à l'ambiance */}
         <div className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen overflow-hidden flex items-center justify-center">
           <div className="absolute w-[150%] h-[150%] bg-[radial-gradient(ellipse_at_center,_rgba(74,139,65,0.15)_0%,_rgba(0,0,0,0)_60%)] smoke-anim-1"></div>
           <div className="absolute w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_rgba(180,50,40,0.1)_0%,_rgba(0,0,0,0)_60%)] smoke-anim-2"></div>
@@ -47,16 +84,13 @@ export default function CoinVert() {
             Engrais Spécialisés
           </h2>
           
-          {/* CONTENEUR TITRE + LOGOS AVEC FONDU CORRIGÉ */}
           <div className="flex items-center justify-center gap-4 sm:gap-8 mb-2">
-            
-            {/* Rectangle Vert Gauche : Logo avec fondu radial plus serré */}
             <img 
               src="/masque.png" 
               alt="Logo Gauche" 
               className="w-14 sm:w-24 h-auto object-contain opacity-90 drop-shadow-[0_0_15px_rgba(74,139,65,0.2)]" 
               style={{
-                mixBlendMode: 'screen', // Élimine les résidus sombres
+                mixBlendMode: 'screen',
                 WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
                 maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
               }}
@@ -67,19 +101,17 @@ export default function CoinVert() {
               <span className="text-[#4a8b41]">Vert</span>
             </h1>
 
-            {/* Rectangle Vert Droit : Logo en miroir avec fondu radial plus serré */}
             <img 
               src="/masque.png" 
               alt="Logo Droit" 
               className="w-14 sm:w-24 h-auto object-contain opacity-90 drop-shadow-[0_0_15px_rgba(180,50,40,0.2)]" 
               style={{ 
                 transform: 'scaleX(-1)', 
-                mixBlendMode: 'screen', // Élimine les résidus sombres
+                mixBlendMode: 'screen',
                 WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
                 maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
               }}
             />
-
           </div>
           
           <h3 className="font-cheddar text-[#b43228] uppercase text-3xl sm:text-4xl opacity-95 mt-2 tracking-[0.1em]">
@@ -168,13 +200,26 @@ export default function CoinVert() {
         ))}
       </div>
 
+      {/* --- CSS PERSONNALISÉ --- */}
       <style>{`
+        /* Nuages du header */
         .smoke-anim-1 { animation: smoke-drift 20s infinite alternate ease-in-out; filter: blur(40px); }
         .smoke-anim-2 { animation: smoke-drift 25s infinite alternate-reverse ease-in-out; filter: blur(50px); }
         @keyframes smoke-drift {
           0% { transform: translate(-5%, -5%) scale(1); opacity: 0.3; }
           50% { transform: translate(5%, 10%) scale(1.1); opacity: 0.6; }
           100% { transform: translate(-10%, 5%) scale(1.05); opacity: 0.4; }
+        }
+
+        /* Particules de fond (Weed / Cendre) */
+        .weed-smoke-particle {
+          animation: floatParticle infinite linear alternate;
+          opacity: 0.3;
+        }
+        @keyframes floatParticle {
+          0% { transform: translateY(0) scale(1); opacity: 0.1; }
+          50% { transform: translateY(-40px) scale(1.3); opacity: 0.6; }
+          100% { transform: translateY(-80px) scale(0.8); opacity: 0.2; }
         }
       `}</style>
     </div>
